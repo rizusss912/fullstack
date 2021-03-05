@@ -1,0 +1,6 @@
+export const USER = {
+    MAX_LOGIN_LENGTH: 32,
+    MIN_LOGIN_LENGTH: 4,
+    MIN_PASSWORD_LENGTH: 6,
+    MAX_PASSWORD_LENGTH: 32,
+}
