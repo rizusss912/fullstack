@@ -25,7 +25,7 @@ export async function createModule(req: Request, res: Response, user: UserModel)
 
         await module.save();
 
-        const response: ModuleConfig = mapModuleModelToModuleConfig(module);
+        const response: ModuleConfig = mapModuleModelToModuleConfig(module, true, true);
 
         res.status(201).json(response);
     }

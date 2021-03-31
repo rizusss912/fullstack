@@ -37,16 +37,38 @@ export function modulesReducers(state: ModulesState = initialModulesState, actio
         data: action.payload,
       };
 
+      function getNewModulesListByLastModules(modules: ModuleState[], module: ModuleState): ModuleState[] {
+        return modules.some((value: ModuleState) => module.data._id === value.data._id)
+          ? modules.map((value: ModuleState) => value.data._id === module.data._id ? module : value)
+          : modules.concat([module]);
+      }
+
       return Array.isArray(state.modules)
         ? {
           ...state,
-          modules: state.modules.concat([module]),
+          modules: getNewModulesListByLastModules(state.modules, module),
         }
         : {
           ...state,
           status: DataStatus.Valid,
-          modules: [module],
+          modules: getNewModulesListByLastModules([], module),
         };
+    },
+    [ModulesActionsTypes.DeleteModuleById](state: ModulesState) {
+      return {
+        ...state,
+        modules: Array.isArray(state.modules)
+          ? state.modules.filter((module: ModuleState) => module.data._id !== action.payload)
+          : state.modules,
+      };
+    },
+    [ModulesActionsTypes.SetDataStatusByModuleId](state: ModulesState) {
+      return {
+        ...state,
+        modules: Array.isArray(state.modules)
+          ? state.modules.map((module: ModuleState) => module.data._id === action.payload._id ? {...module, status: action.payload.status} : module)
+          : state.modules,
+      };
     },
   };
 

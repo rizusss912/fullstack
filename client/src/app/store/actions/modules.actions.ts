@@ -2,12 +2,16 @@ import {Action} from "@ngrx/store";
 import {ModuleConfig} from "../../../../../src/routes/module/module-list";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ModuleCreateRequest} from "../../../../../src/routes/module/create-module";
+import {DataStatus} from "../enums/data-status";
+
 export enum ModulesActionsTypes {
   StartLoadingModules = '[Modules] Start loading modules by backend',
   SetModules = '[Modules] Set valid modules list',
   SetErrorModules = '[Modules] Set http error modules loading',
-  CreateModule = '[Modules] Create module',
-  AddModule = '[Modules] Add module',
+  CreateModule = '[Modules] Create module by backend',
+  AddModule = '[Modules] Add module to modules list',
+  DeleteModuleById = '[Modules] Delete module in list',
+  SetDataStatusByModuleId = '[Modules] Set data status to module',
 }
 
 export class StartLoadingModules implements Action {
@@ -42,6 +46,21 @@ export class AddModule implements Action {
   }
 }
 
+export class DeleteModuleById implements Action {
+  public readonly type = ModulesActionsTypes.DeleteModuleById;
+
+  constructor(public readonly payload: string) {
+  }
+}
+
+export class SetDataStatusByModuleId implements Action {
+  public readonly type = ModulesActionsTypes.SetDataStatusByModuleId;
+
+  constructor(public readonly payload: { _id: string, status: DataStatus }) {
+  }
+}
+
+
 export type ModulesAction =
   (
     StartLoadingModules
@@ -49,5 +68,7 @@ export type ModulesAction =
     | SetErrorModules
     | CreateModule
     | AddModule
+    | DeleteModuleById
+    | SetDataStatusByModuleId
     )
   & { payload: any };

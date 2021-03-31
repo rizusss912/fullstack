@@ -7,6 +7,7 @@ import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {ModuleConfig, ModuleListResponse} from "../../../../src/routes/module/module-list";
 import {ModuleModel} from "../../../../src/models/interfaces/module.model";
+import {PatchModuleRequest} from "../../../../src/routes/module/patch-module";
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,12 @@ export class API {
         put$(body: ModuleCreateRequest): Observable<ModuleConfig> {
           return http.put<ModuleConfig>(`${url}/create`, body);
         }
+      },
+      delete$(_id: string): Observable<null> {
+        return http.delete<null>(`${url}/${_id}`);
+      },
+      patch$(_id: string, patch: PatchModuleRequest): Observable<ModuleConfig> {
+        return  http.patch<ModuleConfig>(`${url}/${_id}`, patch);
       },
       get$(): Observable<ModuleListResponse> {
         return http.get<ModuleListResponse>(url);
