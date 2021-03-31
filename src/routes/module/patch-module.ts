@@ -4,6 +4,11 @@ import {MODULE_ID_PARAMS_NAME} from "./module.router";
 import {Module} from "../../models/module";
 import {errorHandler} from "../../utils/error-handler";
 import {copyKeys} from "./functions/copy-keys";
+import {ModuleConfig} from "./module-list";
+import {mapModuleModelToModuleConfig} from "./functions/map-module-model-to-module-config";
+import {RightsManager} from "../../utils/rights-manager.class";
+import {Action} from "../../enums/Action.enum";
+import {ModuleModel} from "../../models/interfaces/module.model";
 
 export interface PatchModuleRequest {
     lessons?: string[],
@@ -24,7 +29,16 @@ export async function patchModule(req: Request, res: Response, user: UserModel) 
 
         await Module.update({_id}, params);
 
-        res.status(200);
+        const rights = new RightsManager(user);
+        const newModel: ModuleModel | null = await Module.findById(_id);
+
+        if (!newModel) {
+            res.status(404).json({message: `Нет модудя с id = ${_id}`});
+            return;
+        }
+        const response: ModuleConfig = mapModuleModelToModuleConfig(newModel, rights.isModerator, rights.canUseAction(Action.changeModule));
+
+        res.status(200).json(response);
     } catch (error) {
         errorHandler(res, error);
     }

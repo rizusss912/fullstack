@@ -6,7 +6,6 @@ import {ModuleCreateRequest} from "../../../../src/routes/module/create-module";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {ModuleConfig, ModuleListResponse} from "../../../../src/routes/module/module-list";
-import {ModuleModel} from "../../../../src/models/interfaces/module.model";
 import {PatchModuleRequest} from "../../../../src/routes/module/patch-module";
 
 @Injectable({
