@@ -1,0 +1,35 @@
+<form [formGroup]="createdModuleForm">
+<mat-form-field>
+  <mat-label>
+    Заголовок
+  </mat-label>
+  <input
+    formControlName="title"
+    matInput
+  >
+  <mat-error>
+    Поле не заполнено
+  </mat-error>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>
+    Описание
+  </mat-label>
+  <input
+    formControlName="description"
+    matInput
+  >
+  <mat-error>
+    Поле не заполнено
+  </mat-error>
+</mat-form-field>
+
+<button
+  (click)="onCreateModule()"
+  color="primary"
+  mat-stroked-button
+>
+  Создать модуль
+</button>
+</form>

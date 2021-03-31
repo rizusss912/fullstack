@@ -1,0 +1,16 @@
+<main>
+  <ng-container *ngIf="(registrationStep$ | async) as step; else authorization">
+    <ng-container [ngSwitch]="step">
+      <ng-container *ngSwitchCase="1">
+        <app-registration-form></app-registration-form>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <app-registration-form></app-registration-form>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</main>
+
+<ng-template #authorization>
+  <app-auth-form></app-auth-form>
+</ng-template>

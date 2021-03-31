@@ -1,0 +1,96 @@
+<form
+  [formGroup]="form"
+  class="form"
+>
+  <h2 class="title">
+    Регистрация
+  </h2>
+
+  <mat-form-field>
+    <mat-label>
+      логин
+    </mat-label>
+    <input
+      formControlName="login"
+      matInput
+    >
+    <mat-error>
+      Поле не заполнено
+    </mat-error>
+  </mat-form-field>
+
+  <ng-container formGroupName="password">
+    <mat-form-field>
+      <mat-label>
+        пароль
+      </mat-label>
+      <input
+        [type]="(hidePassword$ | async) ? 'text' : 'password'"
+        formControlName="first"
+        matInput
+      >
+      <button
+        [attr.aria-pressed]="(hidePassword$ | async)"
+        (click)="changeHiddenPassword()"
+        class="icon"
+        mat-icon-button
+        matSuffix
+      >
+        <mat-icon>
+          {{(hidePassword$ | async) ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+      </button>
+      <mat-error>
+        Поле не заполнено
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>
+        повторите пароль
+      </mat-label>
+      <input
+        [type]="(hidePassword$ | async) ? 'text' : 'password'"
+        formControlName="second"
+        matInput
+      >
+      <mat-error>
+        Поле не заполнено
+      </mat-error>
+    </mat-form-field>
+    <mat-error *ngIf="form.get('password').getError('password')">
+      Пароли не совпадают
+    </mat-error>
+  </ng-container>
+
+  <button
+    [disabled]="isDisabledButton$ | async"
+    (click)="onRegistration()"
+    color="primary"
+    mat-stroked-button
+  >
+    Зарегистрироваться
+  </button>
+
+  <button
+    (click)="goToMain()"
+    color="primary"
+    mat-stroked-button
+  >
+    Вернуться на главную
+  </button>
+
+  <mat-error *ngIf="error$ | async as error">
+    {{ error }}
+  </mat-error>
+
+  <span>
+    Уже есть аккаунт?
+    <a
+      [routerLink]=""
+      [queryParams]="{}"
+    >
+      Войти!
+    </a>
+  </span>
+</form>

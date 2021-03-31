@@ -1,0 +1,78 @@
+<form
+  [formGroup]="form"
+  class="form"
+>
+  <h2 class="title">
+    Вход
+  </h2>
+
+  <mat-form-field>
+    <mat-label>
+      логин
+    </mat-label>
+    <input
+      formControlName="login"
+      matInput
+    >
+    <mat-error>
+      Поле не заполнено
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>
+      пароль
+    </mat-label>
+    <input
+      [type]="(hidePassword$ | async) ? 'text' : 'password'"
+      formControlName="password"
+      matInput
+    >
+    <button
+      [attr.aria-pressed]="(hidePassword$ | async)"
+      (click)="changeHiddenPassword()"
+      class="icon"
+      mat-icon-button
+      matSuffix
+    >
+      <mat-icon>
+        {{(hidePassword$ | async)  ? 'visibility_off' : 'visibility'}}
+      </mat-icon>
+    </button>
+    <mat-error>
+      Поле не заполнено
+    </mat-error>
+  </mat-form-field>
+
+  <button
+    [disabled]="isDisabledButton$ | async"
+    (click)="onAuthorization()"
+    color="primary"
+    mat-stroked-button
+  >
+    Войти
+  </button>
+
+  <button
+    (click)="goToMain()"
+    color="primary"
+    mat-stroked-button
+  >
+    Вернуться на главную
+  </button>
+
+  <mat-error *ngIf="error$ | async as error">
+    {{ error }}
+  </mat-error>
+
+  <span>
+    Нет аккаунта?
+    <a
+      [routerLink]=""
+      [queryParams]="{ registrationStep: 1 }"
+    >
+      Зарегистрироваться!
+    </a>
+  </span>
+</form>
+

@@ -1,0 +1,115 @@
+<mat-drawer-container
+  [hasBackdrop]="true"
+  class="drawer-content"
+>
+
+  <mat-drawer
+    class="only-small-screen side-menu"
+    mode="over"
+    autoFocus="autofocus"
+    #drawer
+  >
+    <header class="only-small-screen">
+      <ng-container *ngTemplateOutlet="navList"></ng-container>
+    </header>
+  </mat-drawer>
+
+  <mat-drawer-content class="drawer-content">
+
+    <div class="wrapper">
+
+      <div class="logo justify-space-around only-large-screen">
+        <div class="justify-content-center">
+          <h1>
+            tech.deutsch
+          </h1>
+        </div>
+        <app-logo size="100"></app-logo>
+      </div>
+
+      <div class="secondary-wrapper">
+
+        <header class="only-large-screen menu-box">
+          <ng-container *ngTemplateOutlet="navList"></ng-container>
+        </header>
+
+        <div
+          (click)="drawer.toggle()"
+          class="only-small-screen menu-box"
+          id="small-screen-menu"
+        >
+          <header class="justify-space-between">
+          <mat-icon class="menu-icon justify-content-center">
+            menu
+          </mat-icon>
+            <div class="justify-content-center">
+              <h1>
+                tech.deutsch
+              </h1>
+            </div>
+            <mat-icon class="menu-icon justify-content-center">
+              miscellaneous_services
+            </mat-icon>
+          </header>
+        </div>
+
+        <main>
+          <ng-content></ng-content>
+        </main>
+
+        <app-footer></app-footer>
+      </div>
+    </div>
+  </mat-drawer-content>
+
+</mat-drawer-container>
+
+
+<ng-template #navList>
+  <nav type="navigation">
+    <ul>
+      <li>
+        <a
+          routerLink=""
+          [class.active]="isActive('')"
+        >
+          ГЛАВНАЯ
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/products"
+          [class.active]="isActive('/products')"
+        >
+          ПРОДУКТЫ
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/lk"
+          [class.active]="isActive('/lk')"
+        >
+          ЛИЧНЫЙ КАБИНЕТ
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/basket"
+          [class.active]="isActive('/basket')"
+        >
+          КОРЗИНА
+        </a>
+      </li>
+      <ng-container *ngIf="isAdmin">
+        <li>
+          <a
+            routerLink="/admin"
+            [class.active]="isActive('/admin')"
+          >
+            АДМИНКА
+          </a>
+        </li>
+      </ng-container>
+    </ul>
+  </nav>
+</ng-template>

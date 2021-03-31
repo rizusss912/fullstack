@@ -1,0 +1,14 @@
+<ng-container *ngIf="login$ | async as login">
+  <p>
+    {{login}}
+  </p>
+</ng-container>
+
+<p> лк где-то тут...</p>
+
+<button
+  (click)="onExit()"
+  mat-raised-button
+>
+  выйти
+</button>
