@@ -21,8 +21,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 var mongoose_1 = __importStar(require("mongoose"));
-// @ts-ignore
-var user_1 = require("../configs/models/user");
+var user_1 = require("./configs/user");
+var status_enum_1 = require("./enums/status.enum");
+var model_enum_1 = require("./enums/model.enum");
 var userSchema = new mongoose_1.Schema({
     login: {
         type: String,
@@ -40,6 +41,13 @@ var userSchema = new mongoose_1.Schema({
     created: {
         type: Date,
         required: [true, "\u041F\u043E\u043B\u0435 created \u043D\u0435 \u0437\u0430\u043F\u043E\u043B\u043D\u0435\u043D\u043E"],
-    }
+        default: Date.now,
+    },
+    statuses: {
+        type: [String],
+        enum: status_enum_1.Status,
+        required: false,
+        default: [],
+    },
 });
-exports.User = mongoose_1.default.model('User', userSchema);
+exports.User = mongoose_1.default.model(model_enum_1.Model.User, userSchema);

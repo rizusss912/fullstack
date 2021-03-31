@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.moduleRouter = exports.MODULE_ID_PARAMS_NAME = void 0;
+var express_1 = __importDefault(require("express"));
+var request_processing_factory_1 = require("../../middleware/request-processing.factory");
+var create_module_1 = require("./create-module");
+var Action_enum_1 = require("../../enums/Action.enum");
+var module_list_1 = require("./module-list");
+var delete_module_1 = require("./delete-module");
+var patch_module_1 = require("./patch-module");
+var router = express_1.default.Router();
+exports.MODULE_ID_PARAMS_NAME = 'module_id';
+router.put('/create', request_processing_factory_1.RequestProcessingFactory.onlyAdmin(create_module_1.createModule, Action_enum_1.Action.createModule));
+router.get('', request_processing_factory_1.RequestProcessingFactory.maybeAuthorized(module_list_1.getModuleListByUnauthorized, module_list_1.getModuleListByAuthorized));
+router.delete("/:" + exports.MODULE_ID_PARAMS_NAME, request_processing_factory_1.RequestProcessingFactory.onlyAdmin(delete_module_1.deleteModule, Action_enum_1.Action.deleteModule));
+router.patch("/:" + exports.MODULE_ID_PARAMS_NAME, request_processing_factory_1.RequestProcessingFactory.onlyAdmin(patch_module_1.patchModule, Action_enum_1.Action.patchModule));
+exports.moduleRouter = router;

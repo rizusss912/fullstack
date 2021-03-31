@@ -35,41 +35,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginRouter = void 0;
-var express_1 = __importDefault(require("express"));
+exports.login = void 0;
 var user_1 = require("../../models/user");
-var get_token_by_user_1 = require("./functions/get-token-by-user");
-var router = express_1.default.Router();
-function login(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, login, password, candidate, response;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = req.body, login = _a.login, password = _a.password;
-                    return [4 /*yield*/, user_1.User.findOne({ login: login })];
-                case 1:
-                    candidate = _b.sent();
-                    if (!candidate) {
-                        res.status(404).json({ message: "\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C " + login + " \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D" });
-                        return [2 /*return*/];
-                    }
-                    if (candidate.password !== password) {
-                        res.status(401).json({ message: "\u041D\u0435\u0432\u0435\u0440\u043D\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C" });
-                        return [2 /*return*/];
-                    }
-                    response = {
-                        access_token: "Bearer " + get_token_by_user_1.getTokenByUserModel(candidate),
-                    };
-                    res.status(200).json(response);
+var get_authorisation_by_user_model_1 = require("./functions/get-authorisation-by-user-model");
+var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, login, password, candidate, response;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, login = _a.login, password = _a.password;
+                return [4 /*yield*/, user_1.User.findOne({ login: login })];
+            case 1:
+                candidate = _b.sent();
+                if (!candidate) {
+                    res.status(404).json({ message: "\u041F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C " + login + " \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D" });
                     return [2 /*return*/];
-            }
-        });
+                }
+                if (candidate.password !== password) {
+                    res.status(401).json({ message: "\u041D\u0435\u0432\u0435\u0440\u043D\u044B\u0439 \u043F\u0430\u0440\u043E\u043B\u044C" });
+                    return [2 /*return*/];
+                }
+                response = get_authorisation_by_user_model_1.getAuthorisationDataByUserModel(candidate);
+                res.status(200).json(response);
+                return [2 /*return*/];
+        }
     });
-}
-router.post('/login', login);
-exports.loginRouter = router;
+}); };
+exports.login = login;

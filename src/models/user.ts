@@ -1,9 +1,10 @@
 import mongoose, { Schema } from "mongoose";
-// @ts-ignore
-import {USER} from '../configs/models/user';
+import {USER} from './configs/user';
 import {UserModel} from "./interfaces/user.model";
+import {Status} from "./enums/status.enum";
+import {Model} from "./enums/model.enum";
 
-const userSchema = new Schema({
+const userSchema = new Schema<UserModel>({
     login: {
         type: String,
         required: [true, `Поле login не заполнено`],
@@ -20,7 +21,14 @@ const userSchema = new Schema({
     created: {
         type: Date,
         required: [true, `Поле created не заполнено`],
-    }
+        default: Date.now,
+    },
+    statuses: {
+        type: [String], // Status enum
+        enum: Status,
+        required: false,
+        default: [],
+    },
 });
 
-export const User = mongoose.model<UserModel>('User', userSchema);
+export const User = mongoose.model<UserModel & Document>(Model.User, userSchema);

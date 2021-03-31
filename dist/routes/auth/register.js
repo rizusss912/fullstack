@@ -46,40 +46,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerRouter = void 0;
-var express_1 = __importDefault(require("express"));
+exports.register = void 0;
 var user_1 = require("../../models/user");
 var error_handler_1 = require("../../utils/error-handler");
-var get_token_by_user_1 = require("./functions/get-token-by-user");
-var router = express_1.default.Router();
-function register(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var user, response, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    user = new user_1.User(__assign(__assign({}, req.body), { created: Date.now() }));
-                    return [4 /*yield*/, user.save()];
-                case 1:
-                    _a.sent();
-                    response = {
-                        access_token: "Bearer " + get_token_by_user_1.getTokenByUserModel(user),
-                    };
-                    res.status(201).json(response);
-                    return [3 /*break*/, 3];
-                case 2:
-                    error_1 = _a.sent();
-                    error_handler_1.errorHandler(res, error_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
-            }
-        });
+var get_authorisation_by_user_model_1 = require("./functions/get-authorisation-by-user-model");
+var admin_1 = require("../../configs/admin");
+var status_enum_1 = require("../../models/enums/status.enum");
+// TODO: Сейчас пароли хранятся в открытом виде, их нужно кодировать
+var register = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, response, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                user = new user_1.User(__assign(__assign({}, req.body), { created: Date.now(), statuses: admin_1.admin.use && admin_1.admin.login === req.body.login ? [status_enum_1.Status.Admin] : [] }));
+                return [4 /*yield*/, user.save()];
+            case 1:
+                _a.sent();
+                response = get_authorisation_by_user_model_1.getAuthorisationDataByUserModel(user);
+                res.status(201).json(response);
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                error_handler_1.errorHandler(res, error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
     });
-}
-router.post('/register', register);
-exports.registerRouter = router;
+}); };
+exports.register = register;

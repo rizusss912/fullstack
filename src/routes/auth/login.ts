@@ -1,12 +1,10 @@
-import express, {Request, Response, Router} from 'express';
+import {Request, Response} from 'express';
 import {User} from "../../models/user";
 import {UserLoginRequest} from "./interfaces/user-login-request";
-import {UserLoginResponse} from "./interfaces/user-login-response";
-import {getTokenByUserModel} from "./functions/get-token-by-user";
+import {AuthorisationData, getAuthorisationDataByUserModel} from "./functions/get-authorisation-by-user-model";
+import {unauthorizedImplementer} from "../../middleware/request-processing.factory";
 
-const router: Router = express.Router();
-
-async function login(req: Request, res: Response) {
+export const login: unauthorizedImplementer = async (req: Request, res: Response) => {
     const {login, password}: UserLoginRequest = req.body;
     const candidate = await User.findOne({login});
 
@@ -20,13 +18,8 @@ async function login(req: Request, res: Response) {
         return;
     }
 
-    const response: UserLoginResponse = {
-        access_token: `Bearer ${getTokenByUserModel(candidate)}`,
-    };
+    const response: AuthorisationData = getAuthorisationDataByUserModel(candidate);
 
     res.status(200).json(response);
 }
 
-router.post('/login', login);
-
-export const loginRouter: Router = router;

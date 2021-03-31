@@ -35,13 +35,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useStrategy = void 0;
 var passport_jwt_1 = require("passport-jwt");
 var user_1 = require("../models/user");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var tocens_1 = require("../configs/tocens");
+// @types none (
+var RefreshTokenStrategy = require('passport-refresh-token').Strategy;
 var options = {
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'dev-jwt',
+    secretOrKey: tocens_1.ACCESS_TOKEN.secretOrKey,
 };
 function useStrategy(passport) {
     var _this = this;
@@ -68,5 +75,24 @@ function useStrategy(passport) {
             }
         });
     }); }));
+    passport.use(new RefreshTokenStrategy(options, function (token, done) {
+        var _a;
+        try {
+            jsonwebtoken_1.default.verify(token, tocens_1.REFRESH_TOKEN.secretOrKey);
+            var _id = (_a = jsonwebtoken_1.default.decode(token, { json: true })) === null || _a === void 0 ? void 0 : _a._id;
+            user_1.User.findOne({ _id: _id }, function (err, user) {
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false);
+                }
+                return done(null, user, { scope: 'all' });
+            });
+        }
+        catch (error) {
+            return done(error.message || error);
+        }
+    }));
 }
 exports.useStrategy = useStrategy;
