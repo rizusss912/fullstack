@@ -1,3 +1,31 @@
-<app-modules-list>
+<ng-container *ngIf="modules$ | async as modules; else loader">
+  <div class="title-section">
+    <h1>
+      Модули
+    </h1>
 
-</app-modules-list>
+    <mat-form-field *ngIf="(modulesConditionFields$ | async)?.length">
+      <mat-label>Фильтер</mat-label>
+      <mat-select [formControl]="modulesFilter">
+        <mat-option value="all">Все модули</mat-option>
+        <mat-option
+          *ngFor="let condition of (modulesConditionFields$ | async)"
+          [value]="condition"
+        >
+          {{getFilterFieldByCondition(condition)}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <app-modules-list
+    [onlyCondition]="modulesFilter.valueChanges | async"
+    [modules]="modules"
+  >
+  </app-modules-list>
+</ng-container>
+
+<ng-template #loader>
+  <p>
+    loader
+  </p>
+</ng-template>

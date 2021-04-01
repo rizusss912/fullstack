@@ -1,1 +1,9 @@
-<p>modules-list works!</p>
+<ng-container *ngIf="_modules.length">
+  <ng-container *ngFor="let config of _modules">
+    <app-module
+      [config]="config"
+      class="item"
+    >
+    </app-module>
+  </ng-container>
+</ng-container>

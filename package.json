@@ -7,7 +7,8 @@
     "server": "tsc && nodemon dist/app.js",
     "client": "npm run start --prefix client -open",
     "client-install": "npm install --prefix client",
-    "start": "concurrently \"npm run server\" \"npm run client\""
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "postinstall": "ngcc"
   },
   "keywords": [],
   "author": "Koshechkin Vadim",

@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 import {Model} from "./enums/model.enum";
 import {generalPartOfSchemaForModuleObjects} from "./interfaces/abstract-module-object";
 import {ModuleModel} from "./interfaces/module.model";
+import {MODULE_CONFIG} from "./configs/module.config";
 
 const moduleSchema = new Schema({
     ...generalPartOfSchemaForModuleObjects,
@@ -22,7 +23,7 @@ const moduleSchema = new Schema({
     },
     price: {
         type: Number,
-        default: 0,
+        default: MODULE_CONFIG.DEFAULT_PRICE,
     },
 });
 
